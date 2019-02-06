@@ -12,6 +12,7 @@ import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.animation.AccelerateDecelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 
 import androidx.annotation.Nullable;
 
@@ -83,7 +84,8 @@ public class AnimatedView extends View {
         if(targetProgressPercent > currentProgressPercent) {
 
             animator = ValueAnimator.ofFloat((float) newPos, targetProgressPercent * drawable.getIntrinsicHeight());
-            animator.setDuration(100);
+            animator.setDuration(300);
+            animator.setInterpolator(new DecelerateInterpolator());
 //            animator.setInterpolator(new AccelerateDecelerateInterpolator());
 
             animator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
