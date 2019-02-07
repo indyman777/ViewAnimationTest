@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
                 Random rand = new Random();
 //                float newFloat = rand.nextFloat();
 
-                progress = progress + rand.nextInt(8) - 1;
+                progress = progress + rand.nextInt(7) - 1;
                 Log.i("test", "progress: " + String.valueOf(progress));
                 if(progress > 100f) progress = 100f;
 

@@ -20,8 +20,8 @@ import static androidx.core.content.ContextCompat.getDrawable;
 
 public class AnimatedView extends View {
 
-    private boolean isAnimating;
-    private Drawable drawable;
+    private boolean isLevelFalling;
+    private Drawable drawable, drawable_cup_overlay;
     private Paint fluidLevelPaint, backgroundPaint;
     private Rect drawableRect, backgroundRect, fluidLevelRect;
     ValueAnimator animator;
@@ -39,6 +39,7 @@ public class AnimatedView extends View {
         drawableRect.top = newPos;
         drawableRect.right = drawable.getIntrinsicWidth();
         drawableRect.bottom = newPos + drawable.getIntrinsicHeight();
+        drawable_cup_overlay = getDrawable(context, R.drawable.cup_with_fade_overlay);
         backgroundPaint = new Paint(Color.BLACK);
         backgroundRect = new Rect();
         backgroundRect.left = 0;
@@ -72,6 +73,9 @@ public class AnimatedView extends View {
 
         drawable.setBounds(drawableRect);
         drawable.draw(canvas);
+        drawable_cup_overlay.setAlpha(100);
+        drawable_cup_overlay.setBounds(drawableRect);
+        drawable_cup_overlay.draw(canvas);
     }
 
     public void startAnimation(float current, float max) {
@@ -81,8 +85,12 @@ public class AnimatedView extends View {
         float currentProgressPercent = (float) newPos / (float) drawable.getIntrinsicHeight();
         float targetProgressPercent = current / max;
 
-        if(targetProgressPercent > currentProgressPercent) {
+        if(isLevelFalling || targetProgressPercent > currentProgressPercent) {
 
+            // isLevelFalling is set the first time the level is detected to have fallen.  However, the visual level
+            // does not reverse course until it is detected to have fallen again.
+
+            if(targetProgressPercent > currentProgressPercent) isLevelFalling = false;
             animator = ValueAnimator.ofFloat((float) newPos, targetProgressPercent * drawable.getIntrinsicHeight());
             animator.setDuration(300);
             animator.setInterpolator(new DecelerateInterpolator());
@@ -103,5 +111,6 @@ public class AnimatedView extends View {
 
     public void reset() {
         newPos = 0;
+        AnimatedView.this.invalidate();
     }
 }
