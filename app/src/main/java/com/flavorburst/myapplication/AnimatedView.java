@@ -92,7 +92,7 @@ public class AnimatedView extends View {
 
             if(targetProgressPercent > currentProgressPercent) isLevelFalling = false;
             animator = ValueAnimator.ofFloat((float) newPos, targetProgressPercent * drawable.getIntrinsicHeight());
-            animator.setDuration(300);
+            animator.setDuration(200);
             animator.setInterpolator(new DecelerateInterpolator());
 //            animator.setInterpolator(new AccelerateDecelerateInterpolator());
 
